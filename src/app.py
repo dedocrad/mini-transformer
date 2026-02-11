@@ -4,18 +4,22 @@ from tokenizer import CharTokenizer
 import string
 import torch
 from stuff import predict
+import matplotlib.pyplot as plt
 import mlflow
-import mlflow.pytorch
 
 st.title("Mini-Transformer string reverser")
 
 tokenizer = CharTokenizer(string.ascii_letters)
 model = MiniTransformer(vocab_size=tokenizer.vocab_size)
 
-model.load_state_dict(torch.load("../models/best_model.pth"))
+model.load_state_dict(
+    torch.load("models/best_model.pth", map_location="cpu"))
+
 model.eval()
 
 prompt = st.text_input("Enter a prompt:", "example")
+INPUT_IDS = tokenizer.encode(prompt)
+LEN_PROMPT = len(INPUT_IDS)
 if st.button("Generate Text"):
     generated_text = predict(model, tokenizer, prompt)
     st.success(generated_text)
