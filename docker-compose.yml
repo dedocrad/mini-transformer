@@ -5,16 +5,11 @@ services:
     build: .
     container_name: mini-transformer
     ports:
-      - "8501:8501"
+      - "8501:8501"   # Streamlit
+      - "5000:5000"   # MLflow UI
     stdin_open: true
     tty: true
-
-  mlflow:
-    image: python:3.11-slim
-    container_name: mlflow
-    working_dir: /mlflow
-    command: >
-      sh -c "pip install mlflow &&
-             mlflow ui --host 0.0.0.0 --port 5000"
-    ports:
-      - "5000:5000"
+    volumes:
+      - ./mlruns:/mlflow/mlruns
+    environment:
+      - MLFLOW_TRACKING_URI=file:/mlflow/mlruns

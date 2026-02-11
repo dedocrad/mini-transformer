@@ -4,8 +4,10 @@ from tokenizer import CharTokenizer
 import string
 import torch
 from stuff import predict
-import matplotlib.pyplot as plt
 import mlflow
+
+mlflow.set_tracking_uri("file:/mlflow/mlruns")
+mlflow.set_experiment("mini_transformer_inference")
 
 st.title("Mini-Transformer string reverser")
 
@@ -37,3 +39,5 @@ if st.button("Generate Text"):
         mlflow.log_param("target", target_text)
         mlflow.log_param("generated", generated_text)
         mlflow.log_param("exact_match", score)
+
+        st.write("Logged to MLflow:", prompt, generated_text, score)
