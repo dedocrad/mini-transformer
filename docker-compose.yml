@@ -1,15 +1,20 @@
-version: "3.9"
-
 services:
-  mini-transformer:
+  app:
     build: .
-    container_name: mini-transformer
     ports:
-      - "8501:8501"   # Streamlit
-      - "5000:5000"   # MLflow UI
-    stdin_open: true
-    tty: true
+      - "8501:8501"
     volumes:
-      - ./mlruns:/mlflow/mlruns
+      - mlflow-data:/mlflow/mlruns
     environment:
-      - MLFLOW_TRACKING_URI=file:/mlflow/mlruns
+      MLFLOW_TRACKING_URI: file:/mlflow/mlruns
+
+  mlflow:
+    build: .
+    command: ["mlflow", "ui", "--host", "0.0.0.0", "--port", "5000", "--backend-store-uri", "file:/mlflow/mlruns"]
+    ports:
+      - "5001:5000"
+    volumes:
+      - mlflow-data:/mlflow/mlruns
+
+volumes:
+  mlflow-data:

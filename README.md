@@ -1,7 +1,44 @@
 # mini-transformer
-This is a mini-transformer that can turn over lines containing only Latin letters. The project was created to study the architecture of the transformer and understand the operation of the attention mechanism.
+
+Mini-transformer, который переворачивает строки, состоящие из латинских букв. Проект создан для изучения архитектуры Transformer и механизма attention.
+
+## Запуск через Docker
+
+Понадобится установленный и запущенный Docker Desktop.
+
+Соберите образы и запустите приложение:
+
+```bash
+docker compose up --build
+```
+
+После запуска:
+
+- Streamlit-приложение: http://localhost:8501
+- MLflow UI: http://localhost:5001
+
+Streamlit и MLflow используют общий именованный Docker volume `mlflow-data`, поэтому логи экспериментов сохраняются между перезапусками контейнеров.
+
+Остановить контейнеры:
+
+```bash
+docker compose down
+```
+
+Чтобы удалить контейнеры вместе с сохраненными данными MLflow:
+
+```bash
+docker compose down -v
+```
+
+## Структура проекта
+
+- `src/` — модель, токенизатор, inference и Streamlit-приложение.
+- `models/` — сохраненные веса модели.
+- `data/` — данные для обучения.
+- `notebooks/` — ноутбуки для подготовки данных, обучения и inference.
+- `Dockerfile` и `docker-compose.yml` — конфигурация контейнеров.
 
 ## TODO:
-- структурировать dataset.ipynb
-- доделать привязку к mlflow для отслеживания метрик
-- дооформить веб app.py
+- структурировать `dataset.ipynb`
+- дооформить веб-приложение `app.py`
